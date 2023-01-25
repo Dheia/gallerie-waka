@@ -11,6 +11,7 @@ defineProps({
     confirmsTwoFactorAuthentication: Boolean,
     sessions: Array,
 });
+
 </script>
 
 <template>

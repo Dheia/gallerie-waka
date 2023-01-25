@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,4 +33,16 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+    //
+    Route::get('tableaux', [\App\Http\Controllers\TableauController::class, 'index'])
+    ->name('tableaux.index');
+
+    Route::put('tableaux/{tableau}', [\App\Http\Controllers\TableauController::class, 'update']);
+
+    Route::delete('tableaux/{tableau}', [\App\Http\Controllers\TableauController::class, 'destroy']);
+
+    Route::post('tableaux', [\App\Http\Controllers\TableauController::class, 'create']);
+
+    Route::post('/upload-images', [\App\Http\Controllers\ImageController::class, 'upload']);
+    Route::post('/upload-images-revert', [\App\Http\Controllers\ImageController::class, 'uploadRevert']);
 });
