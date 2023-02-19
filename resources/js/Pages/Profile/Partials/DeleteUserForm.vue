@@ -5,7 +5,7 @@ import ActionSection from '@/Components/ActionSection.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import DialogModal from '@/Components/DialogModal.vue';
 import InputError from '@/Components/Forms/InputError.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
+import SecondaryButton from '@/Partials/Btns/SecondaryButton.vue';
 import TextInput from '@/Components/Forms/TextInput.vue';
 
 const confirmingUserDeletion = ref(false);

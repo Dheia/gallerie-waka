@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tableau;
+use App\Models\TableauTag;
 use Illuminate\Support\Collection;
 use ProtoneMedia\LaravelQueryBuilderInertiaJs\InertiaTable;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
-use \App\Http\Requests\StoreTableauRequest;
-use \App\Http\Requests\UpdateTableauRequest;
-use \App\Http\Resources\TableauResource;
-use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpFoundation\Request;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Support\Facades\Request;
 
 class TableauController extends Controller
 {
+    private $orderInverted = true;
+
     public function index()
     {
+        // logger('create');
+        // logger(Request::all());
         $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
             $query->where(function ($query) use ($value) {
                 Collection::wrap($value)->each(function ($value) use ($query) {
@@ -28,32 +28,55 @@ class TableauController extends Controller
                 });
             });
         });
+        if($this->orderInverted)  {
+            $defaultSort = '-order_column';
+        } else {
+            $defaultSort = 'order_column';
+        }
         $tableaux = QueryBuilder::for(Tableau::class)
-        ->defaultSort('-updated_at')
-        ->allowedSorts(['name', 'id', 'updated_at'])
-        ->allowedFilters(['name', $globalSearch])
+        ->defaultSort($defaultSort)
+        ->allowedSorts(['name', 'order_column', 'updated_at'])
+        ->allowedFilters(['name', 'description', $globalSearch])
         ->with('media')
         ->paginate(request('perPage'))
         ->withQueryString()
         ->through(fn ($tableau) => [
             'id' => $tableau->id,
+            'order_column' => $tableau->order_column,
             'name' => $tableau->name,
             'description' => $tableau->description,
-            'medias' => $tableau->media,
+            'media' => $tableau->media,
             'updated_at' => $tableau->updated_at,
-            'images' => $tableau->thumb,
+            'image' => $tableau->thumb,
+            'tags' => $tableau->tableauTags,
+            'tagIds' => $tableau->tableauTags->pluck('id'),
         ]);
         
 
         return Inertia::render('Tableaux/Index', ['tableaux' => $tableaux])->table(function (InertiaTable $table) {
             $table->withGlobalSearch();
-            $table->column('id', 'ID', searchable: true, sortable: true);
+            $table->column('order_column', 'Ordre', sortable: true);
             $table->column('name', 'Nom du tableau', searchable: true, sortable: true);
-            $table->column('name', 'Nom du tableau', searchable: true, sortable: true);
-            $table->column('updated_at', 'MAJ', searchable: true, sortable: true);
+            $table->column('tags', 'Tags');
+            $table->column('updated_at', 'MAJ', sortable: true);
             $table->column('actions', 'Actions');
-            $table->column('images', 'Images');
+            $table->column('image', 'Image');
+            $table->column('', '');
         });
+    }
+
+    public function edit(Tableau $tableau)
+    {
+        return  [
+            'tableau' => [
+                'id' => $tableau->id,
+                'name' => $tableau->name,
+                'description' => $tableau->description,
+                'image' => $tableau->getFirstMediaUrl('images'),
+                'tableauTags' => $tableau->tableauTags,
+            ],
+            'tableauTags' => TableauTag::get(),
+        ];
     }
     
     /**
@@ -62,22 +85,24 @@ class TableauController extends Controller
      * @param  \App\Http\Requests\StoreTableauRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        \Log::info('store');
-        \Log::info($request);
         $tableau = Tableau::create(
-            $request->validate([
+            Request::validate([
                 'name' => ['required', 'max:50'],
                 'description' => ['required', 'max:500'],
-                'image'
             ])
         );
-        \Log::info('store 2');
-        $this->processImage($request, $tableau);
-        \Log::info('store 3');
-        return to_route('tableaux.index')->with('message', 'Livre crée');;
+        // \Log::info('store 2');
+        $this->processImage(Request::get('image'), $tableau);
+        if($tags = Request::get('tagIds')) {
+            $tableau->tableauTags()->sync($tags);
+        }
+        // \Log::info('store 3');
+        return to_route('tableaux.index')->with('message', 'Tableau crée');;
     }
+
+   
 
 
 
@@ -88,21 +113,23 @@ class TableauController extends Controller
      * @param  \App\Models\Tableau  $tableau
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tableau $tableau)
+    public function update(Tableau $tableau)
     {
-        \Log::info('update---------------------');
-        \Log::info($request);
-
-        $tableau->update($request->validate([
-            'name' => ['required', 'max:50'],
-            'description' => ['required', 'max:500'],
+        $tableau->update(
+            Request::validate([
+                'name' => ['required', 'max:50'],
+                'description' => ['required', 'max:500'],
             ])
         );
-        $this->processImage($request, $tableau);
+
+        $this->processImage(Request::get('image'), $tableau);
+        if($tags = Request::get('tagIds')) {
+            $tableau->tableauTags()->sync($tags);
+        }
 
         // return redirect()->back()
         //     ->with('message', 'Book updated');
-        return to_route('tableaux.index')->with('message', 'Livre MAJ');;
+        return redirect()->back()->with('message', 'Tableau  mis à jour');;
     }
 
     /**
@@ -113,40 +140,46 @@ class TableauController extends Controller
      */
     public function destroy(Tableau $tableau)
     {
-        \Log::info("destroy");
-        \Log::info($tableau->name);
+        logger($tableau);
         $tableau->delete();
         return redirect()->back()
             ->with('message', 'Book deleted');
     }
 
-    public function getThumb($modelId) {
-        $tableau = null;
-        if($modelId) {
-            \Log::info($modelId);
-            return Media::find($modelId)->getUrl('minithumb');
-        } else {
-            return null;
-        }
-    }
-
     
 
-    protected function processImage(Request $request, $model = null)
+    protected function processImage($image = null, $model = null)
     {
-        \Log::info("processImage : ".$model->name);
-        \Log::info($request);
-
-        $image = $request->get('image');
         if($image && $model)
         {
             $path = storage_path('app/public/' . $image);
-            //\Log::info($path);
-            if(file_exists($path)){
-                //\Log::info('creation');
-                //$model->clearMediaCollection();
+            if(file_exists($path)) {
+                logger('nouveau  fichier, je met  à jour !');
                 $model->addMedia($path)->toMediaCollection('images');
+            } else {
+                logger('pas de fichier, je ne met rien à jour !');
+            }
+        } else {
+            if($model) {
+                $model->getFirstMedia('images')->delete();
             }
         }
+    }
+
+
+    public function moveOrder(Tableau $tableau) {
+        $mode = Request::get('mode');
+        if($this->orderInverted)  {
+            if($mode == 'up') $tableau->moveOrderDown();
+            if($mode =='down') $tableau->moveOrderUp();
+            if($mode =='start') $tableau->moveToEnd();
+            if($mode =='end') $tableau->moveToStart();
+        } else {
+            if($mode == 'up') $tableau->moveOrderUp();
+            if($mode =='down') $tableau->moveOrderDown();
+            if($mode =='start') $tableau->moveToStart();
+            if($mode =='end') $tableau->moveToEnd();
+        }
+        $tableau->save();
     }
 }

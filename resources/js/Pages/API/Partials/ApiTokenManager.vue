@@ -11,7 +11,7 @@ import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/Forms/InputError.vue';
 import InputLabel from '@/Components/Forms/InputLabel.vue';
 import PrimaryButton from '@/Partials/Btns/PrimaryButton.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
+import SecondaryButton from '@/Partials/Btns/SecondaryButton.vue';
 import SectionBorder from '@/Components/SectionBorder.vue';
 import TextInput from '@/Components/Forms/TextInput.vue';
 

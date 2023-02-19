@@ -7,7 +7,7 @@ import DangerButton from '@/Components/DangerButton.vue';
 import InputError from '@/Components/Forms/InputError.vue';
 import InputLabel from '@/Components/Forms/InputLabel.vue';
 import PrimaryButton from '@/Partials/Btns/PrimaryButton.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
+import SecondaryButton from '@/Partials/Btns/SecondaryButton.vue';
 import TextInput from '@/Components/Forms/TextInput.vue';
 
 const props = defineProps({

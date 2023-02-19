@@ -26,17 +26,27 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Inertia::share([
-            'errors' => function() {
+            'errors' => function () {
+                // logger('errors : ');
+                // logger(Session::get('errors') ? Session::get('errors')->getBag('default')->getMessage(): (object) []);
                 return Session::get('errors')
                     ? Session::get('errors')->getBag('default')->getMessage()
                     : (object) [];
             },
         ]);
-        Inertia::share('flash', function() {
+        Inertia::share('flash', function () {
             return [
                 'message' => Session::get('message'),
             ];
         });
-    
+        Inertia::share([
+            'urlPrev'    => function () {
+                if (url()->previous() !== route('login') && url()->previous() !== '' && url()->previous() !== url()->current()) {
+                    return url()->previous();
+                } else {
+                    return 'empty'; // used in javascript to disable back button behavior
+                }
+            },
+        ]);
     }
 }

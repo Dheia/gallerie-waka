@@ -24,7 +24,7 @@ export default {
         formData.append('image', file)
 
         try {
-          let response = await this.$inertia.post('/image-upload', formData, {
+          let response = await this.$inertia.post('bo/image-upload', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             },
@@ -34,9 +34,7 @@ export default {
               )
             }
           })
-          console.log(response.data)
         } catch (error) {
-          console.log(error)
         }
       }
     }

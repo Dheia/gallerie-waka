@@ -21,14 +21,22 @@
     "dependencies": {
         "@headlessui/vue": "^1.7.7",
         "@heroicons/vue": "^2.0.13",
+        "@inertiajs/progress": "^0.2.7",
         "@protonemedia/inertiajs-tables-laravel-query-builder": "^2.1.0",
         "@tinymce/tinymce-vue": "^5.0.0",
+        "@tiptap/pm": "^2.0.0-beta.217",
+        "@tiptap/starter-kit": "^2.0.0-beta.217",
+        "@tiptap/vue-3": "^2.0.0-beta.217",
         "@vueform/multiselect": "^2.5.8",
+        "@vueuse/core": "^9.11.1",
+        "dayjs": "^1.11.7",
         "filepond": "^4.30.4",
         "filepond-plugin-file-poster": "^2.5.1",
         "filepond-plugin-file-validate-type": "^1.2.8",
         "filepond-plugin-image-preview": "^4.6.11",
-        "tinymce": "^6.3.1",
-        "vue-filepond": "^7.0.3"
+        "gsap": "^3.11.4",
+        "vue-filepond": "^7.0.3",
+        "vue-remix-icons": "^2.0.3",
+        "vuedraggable": "^4.1.0"
     }
 }

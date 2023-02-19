@@ -16,10 +16,13 @@ return new class extends Migration
         Schema::create('tableaus', function (Blueprint $table) {
             $table->id();
             $table->string(column: 'name');
+            $table->string(column: 'slug');
             $table->text(column: 'description');
+            $table->integer(column: 'order_column');
             $table->string(column: 'image')->nullable();
+            $table->date(column: 'painted_at')->nullable();
             $table->timestamps();
-        });
+        }); 
     }
 
     /**
