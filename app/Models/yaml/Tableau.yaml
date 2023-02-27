@@ -1,0 +1,25 @@
+fields: 
+    name: 
+        label: Nom du tableau
+        required: true
+    description:
+        label: description
+        fields:
+            type: textarea
+            required: [max:500]
+        column: false
+    order_column:
+        fields: false
+    image:
+        label: image
+        type: media
+        mode: image 
+        valueFrom: thumb
+    date: 
+        label: Date 
+        mode: date 
+        format: short
+ 
+
+
+  

@@ -10,12 +10,15 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
+use Waka\YamlForms\YamlFormsTrait;
+use Waka\YamlForms\YamlFormsInterface;
 
-class Tableau extends Model implements HasMedia, Sortable
+class Tableau extends Model implements HasMedia, Sortable, YamlFormsInterface
 {
     use HasFactory;
     use InteractsWithMedia;
     use SortableTrait;
+    use YamlFormsTrait;
 
 
 

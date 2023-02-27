@@ -17,8 +17,6 @@ class TableauController extends Controller
 
     public function index()
     {
-        // logger('create');
-        // logger(Request::all());
         $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
             $query->where(function ($query) use ($value) {
                 Collection::wrap($value)->each(function ($value) use ($query) {
@@ -40,28 +38,14 @@ class TableauController extends Controller
         ->with('media')
         ->paginate(request('perPage'))
         ->withQueryString()
-        ->through(fn ($tableau) => [
-            'id' => $tableau->id,
-            'order_column' => $tableau->order_column,
-            'name' => $tableau->name,
-            'description' => $tableau->description,
-            'media' => $tableau->media,
-            'updated_at' => $tableau->updated_at,
-            'image' => $tableau->thumb,
-            'tags' => $tableau->tableauTags,
-            'tagIds' => $tableau->tableauTags->pluck('id'),
-        ]);
+        ->through([Tableau::class, 'dataYamlColumnTransformer']);;
         
 
         return Inertia::render('Tableaux/Index', ['tableaux' => $tableaux])->table(function (InertiaTable $table) {
-            $table->withGlobalSearch();
-            $table->column('order_column', 'Ordre', sortable: true);
-            $table->column('name', 'Nom du tableau', searchable: true, sortable: true);
-            $table->column('tags', 'Tags');
-            $table->column('updated_at', 'MAJ', sortable: true);
-            $table->column('actions', 'Actions');
-            $table->column('image', 'Image');
-            $table->column('', '');
+            $table
+            ->column(key:'order_column', label:'Ordre', sortable: true)
+            ->column(key:'name', label:'Nom du tableau', searchable: true, sortable: true);
+            
         });
     }
 
