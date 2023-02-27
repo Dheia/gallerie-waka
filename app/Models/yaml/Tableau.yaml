@@ -1,24 +1,39 @@
-fields: 
-    name: 
-        label: Nom du tableau
-        required: true
-    description:
-        label: description
-        fields:
-            type: textarea
-            required: [max:500]
-        column: false
-    order_column:
-        fields: false
-    image:
-        label: image
-        type: media
-        mode: image 
+name: 
+    label: Nom du tableau
+    required: true
+    ordorable: true
+description:
+    label: descriptionxxxxxxxxx
+    field:
+        type: textarea
+        required: [max:500]
+    column: false
+order_column:
+    field: false
+    ordorable: true
+    context: [create, update]
+image:
+    label: image
+    type: media
+    mode: image
+    context: create
+    column:
         valueFrom: thumb
-    date: 
-        label: Date 
-        mode: date 
-        format: short
+        options:
+            imageWidth: 100px
+            imageHeight: 100px
+    field:  
+        valueFrom: imageBigThumb
+        options:    
+            imageWidth: 300px
+            imageHeight: 300px
+
+    
+painted_at: 
+    label: Paint le 
+    mode: date 
+    format: short
+    ordorable: true
  
 
 

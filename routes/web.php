@@ -63,4 +63,5 @@ Route::middleware([
         Route::put('pages/{page}', [\App\Http\Controllers\PageController::class, 'update']);
 
         Route::inertia('/test', 'Test');
+        Route::inertia('/testform', 'TestForm');
     });
