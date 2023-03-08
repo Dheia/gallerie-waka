@@ -6,3 +6,49 @@
     font-family: 'philosopher';
     src: url('../fonts/Philosopher-Regular.ttf');
 }
+
+@layer base {
+    .btn {
+        @apply px-4 py-2 m-1 text-lg font-bold transition-colors duration-150;
+    } 
+    .rounded-btn {
+        @apply  rounded-full m-1 font-bold transition-colors duration-150;
+    } 
+    .btn-dark {
+        @apply bg-dark hover:bg-accent text-white hover:text-dark
+    }
+    .btn-white {
+        @apply  bg-white hover:bg-accent text-primary hover:text-white  ;
+    }
+    .btn-primary {
+        @apply  bg-primary hover:bg-accent text-white font-sans  ;
+    }
+    .btn-accent {
+        @apply bg-accent hover:bg-primary text-white ;
+    }
+    .btn-front {
+        @apply bg-gray-700 hover:bg-gray-300 rounded text-white hover:text-gray-700 ;
+    }
+    .btn-outline-primary {
+        @apply bg-transparent hover:bg-primary text-primary hover:text-white  border border-primary;
+    }
+    .btn-outline-dark {
+        @apply bg-transparent hover:bg-dark text-dark hover:text-white  border border-dark;
+    }
+    .btn-outline-accent {
+        @apply bg-transparent hover:bg-accent text-accent hover:text-white  border border-accent;
+    }
+    .btn-outline-w-accent {
+        @apply bg-white hover:bg-accent text-accent hover:text-white  border border-accent;
+    }
+    .btn-big {
+        @apply font-medium px-6 py-4
+    }
+    .btn-small {
+        @apply px-2 py-2 font-md text-sm;
+    }
+    .btn-flex-center {
+        @apply flex items-center justify-center;
+    }
+
+}

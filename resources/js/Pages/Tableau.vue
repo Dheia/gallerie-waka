@@ -1,12 +1,9 @@
 <script setup>
-import {Head, Link} from "@inertiajs/vue3";
-import {useDark} from "@vueuse/core";
-import {usePage} from "@inertiajs/inertia-vue3";
-import {Inertia} from "@inertiajs/inertia";
-import {router} from "@inertiajs/vue3";
+import { Link } from '@inertiajs/vue3';
 import {ref, onMounted} from "vue";
 import Badge from "@/Partials/Btns/Badge.vue";
-const isDark = useDark();
+import ThemeSelector from "@/Components/Front/ThemeSelector.vue";
+
 const show = ref(false);
 const props = defineProps({
     data: Object,
@@ -38,9 +35,9 @@ function goBack() {
                 <div class="">
                     <b>Tags</b>
                     <ul>
-                        <div v-for="tag in data.tableau_tags" :key="tag.id" href="/" class="inline-flex">
-                            <Link class="text-sm" href="/">- {{ tag.name }}</Link>
-                        </div>
+                        <li v-for="tag in data.tableau_tags" :key="tag.id" href="/" class="hover:text-gray-500">
+                            <Link class="text-sm" :href="'/?filter[inTags][]='+tag.slug">{{ tag.name }}</Link>
+                        </li>
                     </ul>
                 </div>
 

@@ -20,47 +20,57 @@ class TableauController extends Controller
         $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
             $query->where(function ($query) use ($value) {
                 Collection::wrap($value)->each(function ($value) use ($query) {
-                    $query
-                        ->orWhere('name', 'LIKE', "%{$value}%")
-                        ->orWhere('description', 'LIKE', "%{$value}%");
+                    $query->orWhere('name', 'LIKE', "%{$value}%");
+                    $query->orWhere('slug', 'LIKE', "%{$value}%");
+                    $query->orWhere('description', 'LIKE', "%{$value}%");
                 });
             });
         });
-        if($this->orderInverted)  {
-            $defaultSort = '-order_column';
-        } else {
-            $defaultSort = 'order_column';
-        }
-        $tableaux = QueryBuilder::for(Tableau::class)
-        ->defaultSort($defaultSort)
-        ->allowedSorts(['name', 'order_column', 'updated_at'])
-        ->allowedFilters(['name', 'description', $globalSearch])
-        ->with('media')
-        ->paginate(request('perPage'))
-        ->withQueryString()
-        ->through([Tableau::class, 'dataYamlColumnTransformer']);;
+        // logger(Tableau::extractFields($columnsConfig));
+
+        $columnsConfig = Tableau::getColumnsConfig();
+        $columnsMeta = Tableau::getColumnsMeta();
         
 
-        return Inertia::render('Tableaux/Index', ['tableaux' => $tableaux])->table(function (InertiaTable $table) {
-            $table
-            ->column(key:'order_column', label:'Ordre', sortable: true)
-            ->column(key:'name', label:'Nom du tableau', searchable: true, sortable: true);
-            
-        });
+        $tableaux = QueryBuilder::for(Tableau::class)
+        ->defaultSort($columnsConfig['defaultOrder'])
+        ->allowedSorts(['id', 'painted_at','name', 'order_column',  'slug', 'updated_at'])
+        ->allowedFilters([$globalSearch])
+        ->paginate($columnsConfig['pagination'])
+        ->withQueryString()
+        ->through([Tableau::class, 'dataYamlColumnTransformer']);
+        
+        $inertiaData = [
+            'tableaux' => $tableaux,
+            'metas' => $columnsMeta,
+            'columnsConfig' => $columnsConfig,
+            'sort' => Request::all('sort'),
+            'filter' => Request::all('filter'),
+        ];
+
+        return Inertia::render('Tableaux/Index', $inertiaData);
     }
+
+   
 
     public function edit(Tableau $tableau)
     {
-        return  [
-            'tableau' => [
-                'id' => $tableau->id,
-                'name' => $tableau->name,
-                'description' => $tableau->description,
-                'image' => $tableau->getFirstMediaUrl('images'),
-                'tableauTags' => $tableau->tableauTags,
-            ],
-            'tableauTags' => TableauTag::get(),
+        logger('edit');
+        $inertiaData = [
+            'formData' => $tableau->dataYamlFieldsTransformer(),
+            'config' => $tableau->getModelFormConfig()
         ];
+        logger($tableau->getModelFormConfig()['fields']);
+        return Inertia::render('Tableaux/Edit', $inertiaData);
+    }
+
+
+    public function create() {
+        $inertiaData = [
+            'formData' => Tableau::getEmptyForm(),
+            'config' => Tableau::getStaticModelFormConfig()
+        ];
+        return Inertia::render('Tableaux/Create', $inertiaData);
     }
     
     /**
@@ -69,21 +79,18 @@ class TableauController extends Controller
      * @param  \App\Http\Requests\StoreTableauRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function store()
     {
-        $tableau = Tableau::create(
-            Request::validate([
-                'name' => ['required', 'max:50'],
-                'description' => ['required', 'max:500'],
-            ])
-        );
-        // \Log::info('store 2');
-        $this->processImage(Request::get('image'), $tableau);
-        if($tags = Request::get('tagIds')) {
+        $validationRules = Tableau::getStaticModelValidationRules();
+        logger($validationRules);
+        logger(Request::all());
+        $tableau = Tableau::create(Request::validate($validationRules));
+        $tableau->processImage(Request::get('image'));
+        if($tags = Request::get('tableauTags')) {
             $tableau->tableauTags()->sync($tags);
         }
-        // \Log::info('store 3');
-        return to_route('tableaux.index')->with('message', 'Tableau crée');;
+        return to_route('tableaux.index')->with('message', 'Tableau crée');
+        
     }
 
    
@@ -99,21 +106,17 @@ class TableauController extends Controller
      */
     public function update(Tableau $tableau)
     {
-        $tableau->update(
-            Request::validate([
-                'name' => ['required', 'max:50'],
-                'description' => ['required', 'max:500'],
-            ])
-        );
-
-        $this->processImage(Request::get('image'), $tableau);
-        if($tags = Request::get('tagIds')) {
-            $tableau->tableauTags()->sync($tags);
-        }
-
-        // return redirect()->back()
-        //     ->with('message', 'Book updated');
-        return redirect()->back()->with('message', 'Tableau  mis à jour');;
+        
+        $validationRules = Tableau::getStaticModelValidationRules();
+        logger($validationRules);
+        logger(Request::all());
+        // $tableau->update(Request::validate($validationRules));
+        // $tableau->processImage(Request::get('image'));
+        // if($tags = Request::get('tableauTags')) {
+        //     $tableau->tableauTags()->sync($tags);
+        // }
+        // // return redirect()->back()->with('message', 'Tableau  mis à jour');;
+        // return to_route('tableaux.index')->with('message', 'Tableau crée');
     }
 
     /**
@@ -124,46 +127,11 @@ class TableauController extends Controller
      */
     public function destroy(Tableau $tableau)
     {
-        logger($tableau);
         $tableau->delete();
-        return redirect()->back()
-            ->with('message', 'Book deleted');
+        return redirect()->back()->with('message', 'Book deleted');
     }
-
-    
-
-    protected function processImage($image = null, $model = null)
-    {
-        if($image && $model)
-        {
-            $path = storage_path('app/public/' . $image);
-            if(file_exists($path)) {
-                logger('nouveau  fichier, je met  à jour !');
-                $model->addMedia($path)->toMediaCollection('images');
-            } else {
-                logger('pas de fichier, je ne met rien à jour !');
-            }
-        } else {
-            if($model) {
-                $model->getFirstMedia('images')->delete();
-            }
-        }
-    }
-
 
     public function moveOrder(Tableau $tableau) {
-        $mode = Request::get('mode');
-        if($this->orderInverted)  {
-            if($mode == 'up') $tableau->moveOrderDown();
-            if($mode =='down') $tableau->moveOrderUp();
-            if($mode =='start') $tableau->moveToEnd();
-            if($mode =='end') $tableau->moveToStart();
-        } else {
-            if($mode == 'up') $tableau->moveOrderUp();
-            if($mode =='down') $tableau->moveOrderDown();
-            if($mode =='start') $tableau->moveToStart();
-            if($mode =='end') $tableau->moveToEnd();
-        }
-        $tableau->save();
+        $tableau->moveOrder(Request::get('mode'));
     }
 }

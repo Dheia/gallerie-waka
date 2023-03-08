@@ -9,7 +9,9 @@ module.exports = {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
+        './resources/js/**/*/*.vue',
         './node_modules/@protonemedia/inertiajs-tables-laravel-query-builder/**/*.{js,vue}',
+        './app/models/yaml/*.yaml',
     ],
 
     theme: {
@@ -20,10 +22,16 @@ module.exports = {
             },
             colors: {
                 mydark: "#0a0a0a",
-                primary: "#6050dc",
-                primaryd: "#3a28c8",
-                primaryl: "#998fe9",
-                accent: "#9faf23",
+                primary: {
+                    light: '#6050dc',
+                    DEFAULT: '#6050dc',
+                    dark: '#6050dc',
+                },
+                accent: {
+                    light: '#9faf23',
+                    DEFAULT: '#9faf23',
+                    dark: '#9faf23',
+                },
                 secondary: "#969696",
                 darklight: "#9ca3af"
             },

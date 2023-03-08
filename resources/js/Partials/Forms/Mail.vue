@@ -1,6 +1,6 @@
 <template>
     <WkNotification :message="$page.props.flash.message" />
-    <button @click="openEmail()" class="rounded-md px-3 py-2 font-medium text-gray-300 hover:bg-gray-700 hover:text-white">M'écrire</button>
+    <button @click="openEmail()" class="rounded-md px-3 py-2 font-medium  hover:bg-gray-700 hover:text-white">M'écrire</button>
     <TransitionRoot as="template" :show="isOpen">
         <Dialog as="div" class="absolute top-0 left-0 w-full h-screen z-10" @close="isOpen = false">
             <TransitionChild
@@ -14,7 +14,7 @@
                 <div class="fixed inset-0 bg-white/80 dark:bg-black/90 transition-opacity" />
             </TransitionChild>
 
-            <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="fixed inset-0 z-10 overflow-y-auto ">
                 <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                     <TransitionChild
                         as="template"
@@ -24,8 +24,8 @@
                         leave="ease-in duration-500"
                         leave-from="opacity-100 translate-y-0 sm:scale-100"
                         leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                        <DialogPanel class="relative transform overflow-hidden text-left  sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                            <div class="w-full  text-2xl py-12 dark:text-white"><p>Envoyer un email</p></div>
+                        <DialogPanel class="relative transform overflow-hidden text-left  sm:my-8 sm:w-full sm:max-w-lg sm:p-6  bg-white dark:bg-black border border-gray-700">
+                            <div class="w-full  text-2xl py-6 dark:text-white"><p>Envoyer un email</p></div>
                             <form @submit.prevent="submit">
                                 <div class="mb-4">
                                     <InputLabel for="email" value="Email : " class="dark:text-white" />
@@ -69,17 +69,17 @@
                                     <InputError class="mt-2" :message="form.errors.contenu" />
                                 </div>
                             </form>
-                            <div class="inline-flex space-x-2">
+                            <div class="flex justify-end  space-x-2">
                                 <button
                                     type="button"
                                     @click="sendEmail()"
-                                    class="inline-flex items-center rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                                    class="btn btn-front"
                                     :disabled="isWorking">
                                     <SvgLoading :show="isWorking" />
 
                                     Envoyer
                                 </button>
-                                <OutlineBtn class="mr-1" @click="isOpen = false">Fermer</OutlineBtn>
+                                <button class="btn btn-front" @click="isOpen = false">Fermer</button>
                             </div>
                         </DialogPanel>
                     </TransitionChild>
@@ -91,7 +91,6 @@
 
 <script>
 import {TransitionRoot, TransitionChild, Dialog, DialogPanel, DialogTitle, DialogDescription} from "@headlessui/vue";
-import OutlineBtn from "@/Partials/Btns/OutlineBtn.vue";
 import {useForm} from "@inertiajs/vue3";
 import InputError from "@/Components/Forms/InputError.vue";
 import InputLabel from "@/Components/Forms/InputLabel.vue";
@@ -115,7 +114,6 @@ export default {
         DialogDescription,
         TransitionRoot,
         TransitionChild,
-        OutlineBtn,
         InputError,
         InputLabel,
         TextInput,
@@ -135,18 +133,18 @@ export default {
             this.isOpen = true;
         },
         sendEmail() {
-            console.log("envoyer le mail");
+            //console.log("envoyer le mail");
             let formOptions = {
                 onSuccess: () => {
                     this.form.reset("email", "subject", "contenu"), (this.isOpen = false);
                     this.isWorking = false;
-                    console.log("succès");
-                    console.log(this.$page.props)
+                    //console.log("succès");
+                    //console.log(this.$page.props)
                 },
                 onError: () => {
                     this.isWorking = false;
-                    console.log("erreur");
-                    console.log(this.$page.props)
+                    //console.log("erreur");
+                    //console.log(this.$page.props)
                 },
             };
             this.form.post("/mail", formOptions);

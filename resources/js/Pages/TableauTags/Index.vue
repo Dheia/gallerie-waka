@@ -107,7 +107,6 @@ export default {
     methods: {
         saveItem(item) {
             this.isWorking = true;
-            console.log(this.formObject);
             let formOptions = {
                 onSuccess: () => {
                     this.formObject.reset("name", "slug"), this.closeModal();
@@ -118,7 +117,6 @@ export default {
                 },
             };
             if (item.id) {
-                console.log(item.id);
                 this.$inertia.put(
                     `/tableauTags/${item.id}`,
                     this.formObject,
@@ -141,7 +139,6 @@ export default {
             
         },
         deleteItem(item) {
-            console.log(item.id);
             if (window.confirm("are you sure?")) {
                 this.$inertia.delete(`/tableauTags/${item.id}`);
             }
@@ -150,7 +147,7 @@ export default {
              let obj = {
                 order: this.tableauTags.data.map(({ id }) => id)
             }
-            console.log(obj)
+            //console.log(obj)
             axios.post('/bo/tableauxTags',obj)
         }
     },

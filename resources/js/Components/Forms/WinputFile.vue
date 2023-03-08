@@ -62,7 +62,7 @@ export default {
         };
     },
     activated() {
-        console.log("beforeUpdate");
+        //console.log("beforeUpdate");
     },
     methods: {
         handleFilePondInit() {
@@ -83,7 +83,6 @@ export default {
             }
         },
         handleFilePondLoad(response) {
-            console.log(response)
             this.$emit('update:modelValue', response)
         },
         handleFilePondRemove(source, load, error) {

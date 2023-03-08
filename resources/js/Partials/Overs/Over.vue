@@ -54,7 +54,7 @@ export default {
     },
     methods: {
         setIsOpen(value) {
-            console.log("close");
+            //console.log("close");
             this.$emit("openOver", value);
         },
     },

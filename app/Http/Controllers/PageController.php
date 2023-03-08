@@ -15,7 +15,6 @@ class PageController extends Controller
         $pages = Page::get();
         
         $pages->each(function ($item, $key) {
-            logger($item);
             $item['image'] = $item->image;
         });
         return Inertia::render('Pages/Index', ['pages' => $pages]);
@@ -28,6 +27,12 @@ class PageController extends Controller
     {
         logger($page->name);
         logger(Request::only('title','name','slug' ));
+        logger(Request::validate([
+            'title' => ['required', 'max:250'],
+            'name' => ['required', 'max:150'],
+            'slug' => ['required', 'max:150'],
+            'content' => ['required'],
+            ]));
         $page->update(
             Request::validate([
             'title' => ['required', 'max:250'],
@@ -36,7 +41,6 @@ class PageController extends Controller
             'content' => ['required'],
             ])
         );
-        logger($page->toArray());
 
         $this->processImage(Request::get('image'), $page);
         return to_route('pages.index')->with('message', 'Page  mis à jour');;

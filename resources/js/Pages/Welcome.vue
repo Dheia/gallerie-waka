@@ -1,12 +1,9 @@
 <template>
     <Head title="Bienvenue" />
     <div ref="top"
-        class="relative flex items-top justify-center min-h-screen w-full bg-white dark:bg-mydark sm:items-center sm:pt-0"
+        class="relative flex items-top justify-center min-h-screen w-full dark:text-gray-300 text-gray-600 bg-white dark:bg-mydark sm:items-center sm:pt-0"
     >
         <div class="w-full" >
-            <Over :isOpen="isOverOpen" @openOver="openOrCloseOver">
-                <div> salut les mecs</div>
-            </Over>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex flex-wrap pt-2 lg:pt-16 lg:mb-8" >
                     <div
@@ -21,8 +18,8 @@
                     </transition>
                     <transition  enter-from-class="opacity-0 translate-y-4 opacity-0" enter-active-class="transition-all duration-1000">
                         <div  v-if="showBio" class="px-2 md:px-0">
-                            <div v-html="page.content" class=" max-w-4xl  mx-auto prose dark:prose-invert font-heading text-base mt-12    "></div>
-                            <Badge class=" font-heading" @clickOnBadge="showBio=false"/>
+                            <div v-html="page.content" class=" max-w-none  mx-auto prose dark:prose-invert font-heading text-base mt-12    "></div>
+                            <Badge class=" font-heading my-2" @clickOnBadge="showBio=false"/>
                         </div>
                     </transition>
                         
@@ -48,12 +45,11 @@
                                 </div>
                             </div>
                              <button v-for="button in allTags" :key="button.id" 
-                             :class="{ 'bg-gray-700' : isActive(button.slug) }"
-                             class=" rounded-sm p-1 inline-flex  text-xs uppercase text-gray-300 hover:bg-gray-700 hover:text-white"
+                             :class="{ ' bg-gray-700 text-white' : isActive(button.slug) }"
+                             class=" rounded p-1 inline-flex  text-xs uppercase  hover:bg-gray-400 hover:text-white"
                               @click="handleClick(button.slug)">
-                               {{ button.name }} <span v-if="(isActive(button.slug) && queriesToSend.tagMode == 'ET')" class="text-[10px] text-gray-300 ">&nbsp;{{ queriesToSend.tagMode }}</span>
+                               {{ button.name }} <span v-if="(isActive(button.slug) && queriesToSend.tagMode == 'ET')" class="text-[10px] ">&nbsp;{{ queriesToSend.tagMode }}</span>
                             </button>
-                        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         </div>
                     </div>
                 </div>
@@ -68,9 +64,8 @@
 </template>
 <script>
 import { Head, Link } from "@inertiajs/vue3";
-import NavigationBar from "@/Components/NavigationBar.vue";
-import Gallerie from "@/Components/Gallerie.vue";
-import GallerieV2 from "@/Components/GallerieV2.vue";
+import NavigationBar from "@/Components/Front/NavigationBar.vue";
+import Gallerie from "@/Components/Front/Gallerie.vue";
 import Pagination from "@/Components/Pagination.vue";
 import Over from "@/Partials/Overs/Over.vue";
 import Badge from "@/Partials/Btns/Badge.vue";
@@ -85,7 +80,6 @@ export default {
         Head,
         Pagination,
         Gallerie,
-        GallerieV2,
         NavigationBar,
         Over,
         Badge
@@ -143,7 +137,7 @@ export default {
         showBio: {
             deep: true,
              handler() {
-                 console.log(this.showBio)
+                 //console.log(this.showBio)
              }
         }
     },
@@ -171,7 +165,7 @@ export default {
             if(!this.queriesToSend.filter.inTags) {
                 return
             }
-            //  console.log(this.queriesToSend)
+            //console.log(this.queriesToSend)
             return this.queriesToSend.filter.inTags.includes(name);
         },
         changeTagMode() {
@@ -184,13 +178,11 @@ export default {
         },
         toogleBio() {
             this.showBio = !this.showBio
-            console.log(this.$refs)
             if(this.showBio) {
                 this.$refs["top"].scrollIntoView({behavior: "smooth"});
             } 
         },
         openOrCloseOver(value) {
-            console.log(this.isOverOpen)
             this.isOverOpen = value
         }
         

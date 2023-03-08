@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onUnmounted, inject  } from 'vue';
+
 import { Head, Link, router } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
@@ -8,10 +9,29 @@ import DropdownLink from '@/Components/Forms/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 
+let removeBeforeEvent = router.on('before', (event) => {
+    // console.log('before to')
+    // console.log(event)
+})
+
+
+let removeSuccessEvent = router.on('success', (event) => {
+
+    // console.log('success to')
+    // console.log(event)
+})
+
+onUnmounted(() => {
+    removeBeforeEvent()
+    removeSuccessEvent()
+})
+
+
+// Remove the listener...
 defineProps({
     title: String,
 });
-
+const animate = inject('animate');
 const showingNavigationDropdown = ref(false);
 
 const switchToTeam = (team) => {
@@ -25,6 +45,7 @@ const switchToTeam = (team) => {
 const logout = () => {
     router.post(route('logout'));
 };
+
 </script>
 
 <template>
@@ -49,7 +70,7 @@ const logout = () => {
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('tableaux.index')" :active="route().current('tableaux.index')">
-                                    Tableaux
+                                    {{$page.component}}
                                 </NavLink>
                                 <NavLink :href="route('tags.index')" :active="route().current('tags.index')">
                                     Tags
@@ -287,10 +308,49 @@ const logout = () => {
                 </div>
             </header>
 
-            <!-- Page Content -->
-            <main>
-                <slot />
-            </main>
+            <transition :name="animate" appear>
+                <main :key="$page.component"  class="container p-4 mx-auto mt-[60px] relative">
+                    <slot />
+                </main>
+            </transition>
         </div>
     </div>
 </template>
+
+<style>
+.slide-fade-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from {
+  transform: translateX(30px);
+  opacity: 0;
+}
+.slide-fade-leave-to {
+  transform: translateX(-30px);
+  opacity: 0;
+}
+
+
+
+.slideInv-fade-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.slideInv-fade-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slideInv-fade-enter-from {
+  transform: translateX(-30px);
+  opacity: 0;
+}
+.slideInv-fade-leave-to {
+  transform: translateX(30px);
+  opacity: 0;
+}
+</style>

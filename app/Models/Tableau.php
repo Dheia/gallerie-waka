@@ -24,6 +24,7 @@ class Tableau extends Model implements HasMedia, Sortable, YamlFormsInterface
 
     protected $fillable = [
         'name',
+        'slug',
         'description',
         'image'
     ];
@@ -52,14 +53,53 @@ class Tableau extends Model implements HasMedia, Sortable, YamlFormsInterface
     public function scopeAllTags($query, $scopeSlugs)
     {
         if (is_string($scopeSlugs)) $scopeSlugs = explode(",", $scopeSlugs);
-
-
         return $query->whereHas('tableauTags', function ($query) use ($scopeSlugs) {
             $query->select(\DB::raw('count(*) as tableau_id'))
             ->whereIn('slug', $scopeSlugs)
             ->groupBy('tableau_id');
         }, '=', count($scopeSlugs));
     }
+
+    /**
+     * GETTERS
+     */
+
+    public function getThumbAttribute()
+    {
+        return $this->getFirstMediaUrl('image', 'minithumb');
+    }
+    public function getImageBigThumbAttribute()
+    {
+        return $this->getFirstMediaUrl('image', 'small');
+    }
+    public function getImageFullScreenAttribute()
+    {
+        return $this->getFirstMediaUrl('image', 'large');
+    }
+    public function getJoinTagsAttribute()
+    {
+        $tags =  $this->tableauTags()->pluck('name')->toArray();
+        return implode(',', $tags);
+    }
+    public function getTagsPluckIdAttribute() {
+       return  $this->tableauTags()->pluck('id')->toArray();
+    }
+
+    /**
+     * Lists
+     */
+    public static function staticListTags() {
+        return TableauTag::get(['name', 'id'])->toArray();
+    }
+
+    public function listTags() {
+        return TableauTag::get(['name', 'id'])->toArray();
+    }
+
+
+    /**
+     * MEDIAS
+     */
 
     public function registerMediaConversions(Media $media = null): void
     {
@@ -77,18 +117,5 @@ class Tableau extends Model implements HasMedia, Sortable, YamlFormsInterface
             ->fit('contain', 1980, 1024)
             ->optimize()
             ->nonQueued();
-    }
-
-    public function getThumbAttribute()
-    {
-        return $this->getFirstMediaUrl('images', 'minithumb');
-    }
-    public function getImageBigThumbAttribute()
-    {
-        return $this->getFirstMediaUrl('images', 'small');
-    }
-    public function getImageFullScreenAttribute()
-    {
-        return $this->getFirstMediaUrl('images', 'large');
     }
 }

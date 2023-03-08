@@ -65,7 +65,7 @@ export default {
     this.editor = new Editor({
         editorProps: {
             attributes: {
-            class: 'p-1  max-w-none form-textarea border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm',
+            class: 'p-1  max-w-none form-textarea border-gray-300 focus:border-indigo-300 focus:ring focus:ring-accent-light focus:ring-opacity-50 rounded-md shadow-sm',
             },
         },
         extensions: [

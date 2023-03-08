@@ -114,12 +114,12 @@ export default {
         WinputFile,
     },
     activated() {
-        console.log("beforeUpdate");
+        //console.log("beforeUpdate");
     },
     methods: {
         test() {
-            console.log(this.form.image)
-            console.log(this.form)
+            //console.log(this.form.image)
+            //console.log(this.form)
         }
     },
 };

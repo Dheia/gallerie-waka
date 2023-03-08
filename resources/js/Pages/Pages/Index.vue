@@ -100,7 +100,6 @@ export default {
     methods: {
         saveItem(item) {
             this.isWorking = true;
-            console.log(this.formObject);
             let formOptions = {
                 onSuccess: () => {
                     this.formObject.reset("name", "slug", 'title', 'content', 'image'), this.closeModal();
@@ -112,7 +111,6 @@ export default {
             };
             if (item.id) {
                 console.log(this.formObject)
-                console.log(item.id);
                 this.formObject.put(`pages/${item.id}`,formOptions)
             }
         },
@@ -124,7 +122,6 @@ export default {
             this.isFormOpen = true;
             this.formObject = item ? useForm(item) : defaultFormObject; 
             this.staticOptions = item ? useForm(item.staticOptions) : defaultStaticOptions
-            console.log(this.formObject.slug)
         },
         
         

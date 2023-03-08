@@ -30,7 +30,7 @@ defineExpose({ focus: () => input.value.focus() });
             :id="inputId"
             ref="input"
             type="text"
-            class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+            class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-accent-light focus:ring-opacity-50 rounded-md shadow-sm"
             :value="modelValue"
             @input="$emit('update:modelValue', $event.target.value)">
         <InputError class="mt-2" :message="messageError" />

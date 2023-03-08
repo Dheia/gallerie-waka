@@ -109,7 +109,7 @@ class TableauSeeder extends Seeder
             'painted_at' => $faker->dateTimeBetween('-12 months'),
         ]);
         $path = database_path('seeders/files/tableaux/'.$path);
-        $tableau->addMedia($path)->preservingOriginal()->toMediaCollection('images');
+        $tableau->addMedia($path)->preservingOriginal()->toMediaCollection('image');
         $addTags = TableauTag::whereIn('slug', $tags )->pluck('id');
         $tableau->tableauTags()->sync($addTags);
 
