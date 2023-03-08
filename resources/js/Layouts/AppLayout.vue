@@ -3,11 +3,11 @@ import { ref, onUnmounted, inject  } from 'vue';
 
 import { Head, Link, router } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
-import Banner from '@/Components/Banner.vue';
+import Banner from '@/Components/Bo/Banner.vue';
 import Dropdown from '@/Components/Forms/Dropdown.vue';
 import DropdownLink from '@/Components/Forms/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import NavLink from '@/Components/Bo/NavLink.vue';
+import ResponsiveNavLink from '@/Components/Bo/ResponsiveNavLink.vue';
 
 let removeBeforeEvent = router.on('before', (event) => {
     // console.log('before to')

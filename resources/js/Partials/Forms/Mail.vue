@@ -98,7 +98,7 @@ import TextInput from "@/Components/Forms/TextInput.vue";
 import TextArea from "@/Components/Forms/TextArea.vue";
 //
 import SvgLoading from "@/Partials/Svgs/SvgLoading.vue";
-import WkNotification from "@/Components/WkNotification.vue";
+import WkNotification from "@/Components/Bo/WkNotification.vue";
 
 const defaultFormObject = useForm({
     email: "",

@@ -1,9 +1,9 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { router, useForm, usePage } from '@inertiajs/vue3';
-import ActionSection from '@/Components/ActionSection.vue';
-import ConfirmsPassword from '@/Components/ConfirmsPassword.vue';
-import DangerButton from '@/Components/DangerButton.vue';
+import ActionSection from '@/Components/Bo/ActionSection.vue';
+import ConfirmsPassword from '@/Components/Bo/ConfirmsPassword.vue';
+import DangerButton from '@/Components/Bo/DangerButton.vue';
 import InputError from '@/Components/Forms/InputError.vue';
 import InputLabel from '@/Components/Forms/InputLabel.vue';
 import PrimaryButton from '@/Partials/Btns/PrimaryButton.vue';

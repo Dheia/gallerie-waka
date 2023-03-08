@@ -66,7 +66,7 @@
 import { Head, Link } from "@inertiajs/vue3";
 import NavigationBar from "@/Components/Front/NavigationBar.vue";
 import Gallerie from "@/Components/Front/Gallerie.vue";
-import Pagination from "@/Components/Pagination.vue";
+import Pagination from "@/Components/Front/Pagination.vue";
 import Over from "@/Partials/Overs/Over.vue";
 import Badge from "@/Partials/Btns/Badge.vue";
 import throttle from "lodash/throttle";

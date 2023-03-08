@@ -63,7 +63,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import { Table } from "@protonemedia/inertiajs-tables-laravel-query-builder";
 import ModelForm from "./Form.vue";
 import Modal from "@/Partials/Overs/Modal.vue";
-import WkNotification from "@/Components/WkNotification.vue";
+import WkNotification from "@/Components/Bo/WkNotification.vue";
 import OutlineBtnDanger from "@/Partials/Btns/OutlineBtnDanger.vue";
 import OutlineBtn from "@/Partials/Btns/OutlineBtn.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";

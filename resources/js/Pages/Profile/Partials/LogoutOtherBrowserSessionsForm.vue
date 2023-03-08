@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
-import ActionMessage from '@/Components/ActionMessage.vue';
-import ActionSection from '@/Components/ActionSection.vue';
-import DialogModal from '@/Components/DialogModal.vue';
+import ActionMessage from '@/Components/Bo/ActionMessage.vue';
+import ActionSection from '@/Components/Bo/ActionSection.vue';
+import DialogModal from '@/Components/Bo/DialogModal.vue';
 import InputError from '@/Components/Forms/InputError.vue';
 import PrimaryButton from '@/Partials/Btns/PrimaryButton.vue';
 import SecondaryButton from '@/Partials/Btns/SecondaryButton.vue';
