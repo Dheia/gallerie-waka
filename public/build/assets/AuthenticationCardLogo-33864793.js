@@ -1,0 +1,1 @@
+import{o as e,c as a,w as t,a as o,u as s,j as c}from"./app-711370a3.js";const r=["scr"],p={__name:"AuthenticationCardLogo",setup(n){return(_,i)=>(e(),a(s(c),{href:"/"},{default:t(()=>[o("img",{scr:"/img/favicon.png"},null,8,r)]),_:1}))}};export{p as _};

@@ -11,8 +11,8 @@
                 <OutlineBtn @click="openForm()">
                     Nouveau Tag de tableau<PlusIcon class="ml-2 -mr-1 h-5 w-5" />
                 </OutlineBtn>
-                <div class="pt-12">
-                    <div class="max-w-xl">
+                <div class="pt-12 flex ">
+                    <div class="w-1/3">
                         <draggable
                             :list="tableauTags.data"
                             item-key="order_column"
@@ -21,18 +21,16 @@
                         >
                             <template #item="{ element }">
                                 <ul
-                                    class="border border-gray-400 inline-flex w-full items-center text-gray-500 bg-white whitespace-nowrap text-sm hover:bg-gray-100 focus-within:bg-gray-100"
+                                    class="border border-gray-400 flex w-full items-center text-gray-500 bg-white text-sm hover:bg-gray-100 focus-within:bg-gray-100"
                                 >
-                                    <Bars2Icon class="h-6  pl-1 handle cursor-pointer"/>
+                                    <Bars2Icon class="w-6 h-6 handle cursor-pointer"/>
                                     
                                     
-                                    <li class="py-3 px-6 w-3/6">
-                                        {{ element.name }}
+                                    <li class="py-3 px-6 flex-1 whitespace-nowrap">
+                                        Nom : {{ element.name }}<br>slug: <i class="text-xs">{{ element.slug }}</i>
                                     </li>
-                                    <li class="py-3 px-6 w-2/6">
-                                        {{ element.slug }}
-                                    </li>
-                                     <li class="py-3 px-6 w-2/6 flex justify-end">
+                                    
+                                     <li class="py-3 px-6 w-32 flex justify-end">
                                         <PencilIcon class="w-6 h-6 cursor-pointer hover:stroke-black" @click="openForm(element)"/>
                                         <div class=" bg-green-500 w-6 h-6 text-xs mx-2 rounded-full flex items-center"><div class="mx-auto text-white">{{ element.tableaux_count }}</div></div>
                                         <TrashIcon class="w-6 h-6 cursor-pointer hover:stroke-red-600" @click="deleteItem(element)"/>

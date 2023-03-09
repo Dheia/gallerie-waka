@@ -140,7 +140,6 @@ import {MagnifyingGlassIcon} from "@heroicons/vue/20/solid";
 import {Bars3Icon, BellIcon, XMarkIcon, LockClosedIcon, LockOpenIcon} from "@heroicons/vue/24/outline";
 import {Head, Link, router} from "@inertiajs/vue3";
 import Mail from "@/Partials/Forms/Mail.vue";
-import {useDark, useToggle} from "@vueuse/core";
 import ThemeSelector from "@/Components/Front/ThemeSelector.vue";
 const props = defineProps({
     searchDatas: Object,
