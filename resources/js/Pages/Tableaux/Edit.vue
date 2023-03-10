@@ -21,9 +21,6 @@ export default {
         wakaForm,
         AppLayout,
         Head,
-        LabelForm,
-        InputLabel,
-        InputError,
     },
     props: {
         config: Object,

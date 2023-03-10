@@ -1,0 +1,1 @@
+import{_ as o}from"./_plugin-vue_export-helper-c27b6911.js";import{o as c,e}from"./app-6dd79a14.js";const t={},n={class:"h-12 w-12",src:"/img/favicon.png"};function r(s,a){return c(),e("img",n)}const m=o(t,[["render",r]]);export{m as A};

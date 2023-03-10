@@ -7550,12 +7550,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/charlesStOlive/laravel-yaml-forms.git",
-                "reference": "5142dbdec57f5879560549c0267945f48debbde4"
+                "reference": "fa54521c858ce2aa3de9df413ac2c6cf5e4215cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/charlesStOlive/laravel-yaml-forms/zipball/5142dbdec57f5879560549c0267945f48debbde4",
-                "reference": "5142dbdec57f5879560549c0267945f48debbde4",
+                "url": "https://api.github.com/repos/charlesStOlive/laravel-yaml-forms/zipball/fa54521c858ce2aa3de9df413ac2c6cf5e4215cf",
+                "reference": "fa54521c858ce2aa3de9df413ac2c6cf5e4215cf",
                 "shasum": ""
             },
             "require": {
@@ -7615,7 +7615,7 @@
                 "issues": "https://github.com/charlesStOlive/laravel-yaml-forms/issues",
                 "source": "https://github.com/charlesStOlive/laravel-yaml-forms/tree/0.0.4"
             },
-            "time": "2023-03-10T14:30:16+00:00"
+            "time": "2023-03-10T15:12:22+00:00"
         },
         {
             "name": "webmozart/assert",
