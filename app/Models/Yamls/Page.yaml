@@ -1,0 +1,74 @@
+
+grid:
+    pagination: 15
+    defaultOrder: "name"
+form:
+    url: /bo/page/{id}'
+    formClass: flex flex-wrap
+attributs:
+    id: 
+        field: 
+            hidden: true
+        label: ID
+        column: 
+            hidden: true
+    name: 
+        label: Nom du page
+        ordorable: true
+        searchable: true
+        field:  
+            required: true
+            class: w-full md:w-1/2
+        column:
+            class: font-bold
+    slug: 
+        label: Slug/Code de la page
+        ordorable: true
+        searchable: true
+        field:  
+            class: w-full md:w-1/2
+            required: [unique, required]
+            options:
+                preset: name
+    title:
+        label: Titre de la page 
+        column: false 
+        field: 
+            required: ['max:100']
+            type: richeEditor
+            class: w-1/2
+    image:
+        label: image
+        type: fileUploader
+        mode: image
+        context: create
+        column: false
+        field:  
+            valueFrom: image   
+            class: w-1/4 mx-auto
+    content:
+        label: Contenu
+        field:
+            type: richeEditor
+            required: true
+        column: false
+    
+    metas: 
+        label: Méta données
+        type: nestedform
+        blocClass: bg-gray-200 p-1
+        required: ['array']
+        attributs:  
+            author:
+                label: Auteur 
+                type: label
+            hasImage:
+                label: As une iimage 
+                type: checkBox
+            resume: 
+                label: Résumé de la page
+                type: label
+    
+    
+
+

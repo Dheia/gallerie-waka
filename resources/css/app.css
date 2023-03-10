@@ -9,11 +9,15 @@
 
 @layer base {
     .btn {
-        @apply px-4 py-2 m-1 text-lg font-bold transition-colors duration-150;
+        @apply px-4 py-2 rounded text-base font-bold transition-colors duration-150;
     } 
+    
     .rounded-btn {
-        @apply  rounded-full m-1 font-bold transition-colors duration-150;
+        @apply  rounded-full font-bold transition-colors duration-150;
     } 
+    .btn-inline {
+         @apply  inline-flex items-center
+    }
     .btn-dark {
         @apply bg-dark hover:bg-accent text-white hover:text-dark
     }
@@ -45,7 +49,7 @@
         @apply font-medium px-6 py-4
     }
     .btn-small {
-        @apply px-2 py-2 font-md text-sm;
+        @apply px-2 py-2 text-sm ;
     }
     .btn-flex-center {
         @apply flex items-center justify-center;

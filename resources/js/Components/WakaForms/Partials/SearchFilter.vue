@@ -1,12 +1,11 @@
 <template>
-    <div class="w-full flex space-x-4 justify-between">
+    <div class="w-full flex space-x-4 justify-end">
         <div class="flex justify-start space-x-4 items-center">
             <div class="flex bg-white shadow">
                 <input class="" autocomplete="off" type="text" name="search" placeholder="Rechercher..." v-model="formMeta.filter.global" />
             </div>
-
-            <Popover class="relative">
-                <PopoverButton class="btn btn-primary">Trier par : {{ formMeta.sort }}</PopoverButton>
+            <Popover class="relative ">
+                <PopoverButton class="btn btn-primary btn-inline m-0"><span>Trier par : {{ formMeta.sort }}</span><ChevronUpDownIcon class="ml-2 -mr-1 h-6 w-6" /></PopoverButton>
                 <PopoverPanel class="absolute z-10 w-64">
                     <div class="p-2 w-full bg-gray-200 shadow-xl">
                         <div v-for="(field, key) in data.metas" :key="key" :value="field.label">
@@ -38,7 +37,7 @@
 
 <script>
 import {Popover, PopoverButton, PopoverPanel} from "@headlessui/vue";
-import {SortAscendingIcon, SortDescendingIcon} from "@heroicons/vue/24/solid";
+import {SortAscendingIcon, SortDescendingIcon, ChevronUpDownIcon} from "@heroicons/vue/24/solid";
 import throttle from "lodash/throttle";
 import pickBy from "lodash/pickBy";
 import mapValues from "lodash/mapValues";
@@ -50,6 +49,7 @@ export default {
         PopoverPanel,
         SortAscendingIcon,
         SortDescendingIcon,
+        ChevronUpDownIcon,
         throttle,
         RiEraserFill,
     },

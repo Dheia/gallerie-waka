@@ -4,30 +4,36 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Values\PageMetas;
-use App\Values\PageStaticOptions;
+
 
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\HasMedia;
+use Waka\YamlForms\YamlFormsTrait;
+use Waka\YamlForms\YamlFormsInterface;
 
-class Page extends Model implements HasMedia
+class Page extends Model implements HasMedia, YamlFormsInterface
 {
     use HasFactory;
     use InteractsWithMedia;
+    use YamlFormsTrait;
 
-    protected $casts = [
-        'metas' => PageMetas::class,
-        'staticOptions' => PageStaticOptions::class,
-    ];
+
 
     protected $fillable = [
         'name',
         'slug',
         'title',
+        'image',
         'metas',
         'options',
         'content'
+    ];
+
+
+    protected $casts = [
+        'metas' => 'array',
+        'options' => 'array'
     ];
 
     /**
@@ -54,4 +60,6 @@ class Page extends Model implements HasMedia
     {
         return $this->getFirstMediaUrl('image');
     }
+
+    
 }

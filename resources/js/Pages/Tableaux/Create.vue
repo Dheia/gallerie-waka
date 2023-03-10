@@ -1,10 +1,10 @@
 <template>
 <AppLayout title="Gestion tableaux">
-        <Head title="editer un tableau" />
-        <h1 class="mb-8 text-3xl font-bold">Editer un tableaux</h1>
-    <div class="max-w-4xl">
-        <wakaForm :class="config.form.formClass" :config="config" :formData="form" @submitWakaForm="submitForm">
-            <template #label-name></template>
+        <template #header>
+                <h2 class="py-2 font-semibold text-xl whitespace-nowrap text-gray-800 leading-tight">Nouveau Tableau</h2>
+        </template>
+    <div class="max-w-4xl p-8">
+        <wakaForm :class="config.form.formClass" :config="config" :formData="form" @submitWakaForm="submitForm" @wakaFormClose="goBack()">
         </wakaForm>
     </div>
 </AppLayout>
@@ -29,40 +29,6 @@ export default {
     data() {
         return {
             form: this.formData,
-            testconfig: {
-                form: {
-                    url: "/bo/mycontroller{id}",
-                    formClass: "flex flex-wrap",
-                },
-                fields: {
-                    name: {
-                        type: "label",
-                        label: "Nom",
-                        required: true,
-                        class: "w-full md:w-1/2",
-                        // blocClass: "m-2 p-2"
-                    },
-                    slug: {
-                        type: "label",
-                        label: "slug",
-                        required: true,
-                        class: "w-full md:w-1/2",
-                    },
-                    description: {
-                        type: "richeEditor",
-                        label: "contenu",
-                    },
-                    image: {
-                        type: "fileUploader",
-                        label: "Charger une image",
-                    },
-                },
-            },
-            testformData: {
-                name: "Hello World",
-                slug: "hello-world",
-                description: "<p>Bonjour à tous</p>",
-            },
         };
     },
     mounted() {
@@ -89,6 +55,9 @@ export default {
             let formObject = useForm(form)
             formObject.post(`/bo/tableaux`,formOptions)
         },
+        goBack() {
+            window.history.back();
+        }
     },
 };
 </script>

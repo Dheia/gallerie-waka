@@ -1,0 +1,36 @@
+
+grid:
+    pagination: 100
+    defaultOrder: "-order_column"
+form:
+    url: /bo/tableauTag/{id}'
+    formClass: flex flex-wrap
+attributs:
+    id: 
+        label: ID
+        field: 
+            hidden: true
+        column: 
+            hidden: true
+    name: 
+        label: Nom du tag 
+        field:  
+            required: true
+            class: w-full md:w-1/2
+        column:
+            class: font-bold
+    slug: 
+        label: Slug/Code du Tag
+        field:  
+            class: w-full md:w-1/2
+            required: [unique, required]
+            options:
+                preset: name
+    count:
+        label: Nombre
+        ordorable: false 
+        searchable: false
+        field: false
+        valueFrom: countTableaux
+
+

@@ -40,10 +40,10 @@ class Tableau extends Model implements HasMedia, Sortable, YamlFormsInterface
      */
     public function scopeInTags($query, $scopeSlugs)
     {
-        logger("scopeInTags");
-        logger($scopeSlugs);
+        //logger("scopeInTags");
+        //logger($scopeSlugs);
         if (is_string($scopeSlugs)) $scopeSlugs = explode(",", $scopeSlugs);
-        logger($scopeSlugs);
+        //logger($scopeSlugs);
         //return $query;
         return $query->whereHas('tableauTags', function ($query) use ($scopeSlugs) {
             $query->whereIn('slug', $scopeSlugs);

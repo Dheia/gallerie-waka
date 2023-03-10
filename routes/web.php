@@ -25,7 +25,7 @@ use Inertia\Inertia;
 //     ]);
 // });
 Route::get('/', [\App\Http\Controllers\WelcomeController::class, 'index'])->name('welcome');
-Route::get('/pages/{slug}', [\App\Http\Controllers\PageController::class, 'get']);
+Route::get('/page/{slug}', [\App\Http\Controllers\FrontPageController::class, 'get']);
 Route::get('/tableau/{tableau}', [\App\Http\Controllers\WelcomeController::class, 'get'])->name('tableau');
 Route::post('/mail', [\App\Http\Controllers\MailController::class, 'send'])->name('mail');
 
@@ -43,19 +43,27 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             Route::put('tableaux/{tableau}/moveorder', 'moveOrder')->name('tableaux.move_order');
         });
 
+        Route::controller(\App\Http\Controllers\TableauTagController::class)->group(function () {
+            Route::get('tableautags', 'index')->name('tableautags.index');
+            Route::get('tableauxTags/getAll', 'edit');
+            Route::get('tableautags/{tableauTag}', 'edit')->name('tableautags.edit');
+            Route::put('tableautags/{tableauTag}', 'update')->name('tableautags.update');
+            Route::get('tableauxtags/create', 'create')->name('tableautags.create');
+            Route::delete('tableautags/{tableauTag}', 'destroy')->name('tableautags.delete');
+            Route::post('tableautags', 'store')->name('tableautags.store');
+            Route::post('tableautags/neworder', 'newOrder')->name('tableaux.newOrder');
+        });
+        Route::controller(\App\Http\Controllers\PageController::class)->group(function () {
+            Route::get('pages', 'index')->name('pages.index');
+            Route::get('pages/{page}', 'edit')->name('pages.edit');
+            Route::put('pages/{page}', 'update')->name('pages.update');
+            Route::get('pages/create', 'create')->name('pages.create');
+            Route::delete('pages/{page}', 'destroy')->name('pages.delete');
+            Route::post('pages', 'store')->name('pages.store');
+            Route::post('pages/neworder', 'newOrder')->name('pages.newOrder');
+        });
         Route::post('upload-images', [\App\Http\Controllers\ImageController::class, 'upload']);
         Route::post('upload-images-revert', [\App\Http\Controllers\ImageController::class, 'uploadRevert']);
-
-        Route::get('tableauTags', [\App\Http\Controllers\TableauTagController::class, 'index'])
-            ->name('tags.index');
-
-        Route::get('tableauxTags/getall', [\App\Http\Controllers\TableauTagController::class, 'getAll']);
-        Route::post('tableauxTags', [\App\Http\Controllers\TableauTagController::class, 'newOrder']);
-
-        Route::get('pages', [\App\Http\Controllers\PageController::class, 'index'])
-            ->name('pages.index');
-        Route::put('pages/{page}', [\App\Http\Controllers\PageController::class, 'update']);
-
         Route::inertia('/createtableaux', 'Test');
         Route::inertia('/testform', 'TestForm');
     });

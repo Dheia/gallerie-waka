@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Request;
 
 class TableauTagController extends Controller
 {
-    private $orderInverted = false;
     /**
      * Display a listing of the resource.
      *
@@ -19,31 +18,16 @@ class TableauTagController extends Controller
      */
     public function index()
     {
-        $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
-            $query->where(function ($query) use ($value) {
-                Collection::wrap($value)->each(function ($value) use ($query) {
-                    $query
-                        ->orWhere('name', 'LIKE', "%{$value}%")
-                        ->orWhere('slug', 'LIKE', "%{$value}%");
-                });
-            });
-        });
-         if($this->orderInverted)  {
-            $defaultSort = '-order_column';
-        } else {
-            $defaultSort = 'order_column';
-        }
+        $columnsConfig = TableauTag::getColumnsConfig();
+
+
         $tableauTags = QueryBuilder::for(TableauTag::class)
-        ->defaultSort($defaultSort)
-        ->allowedSorts(['name', 'id', 'updated_at'])
+        ->defaultSort($columnsConfig['defaultOrder'])
+        ->allowedSorts(['name', 'id'])
         ->withCount('tableaux')
         ->paginate(request('perPage'))
-        
-        ->withQueryString();
-
-        logger($tableauTags);
-        
-
+        ->withQueryString()
+        ->through([TableauTag::class, 'dataYamlColumnTransformer']);
         return Inertia::render('TableauTags/Index', ['tableauTags' => $tableauTags]);
     }
 
@@ -52,6 +36,7 @@ class TableauTagController extends Controller
         return TableauTag::get();
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -59,7 +44,13 @@ class TableauTagController extends Controller
      */
     public function create()
     {
-        //
+        //logger('create');
+        $inertiaData = [
+            'formData' => TableauTag::getEmptyForm(),
+            'config' => TableauTag::getStaticModelFormConfig()
+        ];
+        //logger($inertiaData);
+        return $inertiaData;
     }
 
     /**
@@ -70,7 +61,12 @@ class TableauTagController extends Controller
      */
     public function store()
     {
-        //
+        //logger('store');
+        $validationRules = TableauTag::getStaticModelValidationRules();
+        //logger($validationRules);
+        //logger(Request::all());
+        $tableau = TableauTag::create(Request::validate($validationRules));
+        return redirect()->back()->with('message', 'Un nouveau tag a été crée');
     }
 
     /**
@@ -92,7 +88,12 @@ class TableauTagController extends Controller
      */
     public function edit(TableauTag $tableauTag)
     {
-        //
+        //logger("edit : ".$tableauTag->name);
+        $inertiaData = [
+            'formData' => $tableauTag->dataYamlFieldsTransformer(),
+            'config' => $tableauTag->getModelFormConfig()
+        ];
+        return $inertiaData;
     }
 
     /**
@@ -104,7 +105,11 @@ class TableauTagController extends Controller
      */
     public function update(TableauTag $tableauTag)
     {
-        //
+        //logger('update');
+        $validationRules = $tableauTag->getModelValidationRules();
+        $tableauTag->update(Request::validate($validationRules));
+        // return redirect()->back()->with('message', 'Tableau  mis à jour');;
+        return redirect()->back()->with('message', 'tag MAJ');
     }
 
     /**
@@ -115,12 +120,13 @@ class TableauTagController extends Controller
      */
     public function destroy(TableauTag $tableauTag)
     {
-        //
+        $tableauTag->delete();
+        return redirect()->back()->with('message', 'tag deleted');
     }
 
     public function newOrder() {
         $order = Request::get('order');
-        logger($order);
+        //logger($order);
         TableauTag::setNewOrder($order);
         return redirect()->back()
             ->with('message', 'MAJ ordre');

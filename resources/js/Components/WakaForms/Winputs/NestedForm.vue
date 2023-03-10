@@ -11,22 +11,24 @@
 </template>
 
 <script>
-import LabelForm from "./LabelForm.vue";
-import TextAreaForm from "./TextAreaForm.vue";
-import RicheEditorForm from "./RicheEditorForm.vue";
-import FileuploaderForm from "./FileuploaderForm.vue";
-import TagListForm from "./TagListForm.vue";
+import LabelForm from "@/Components/WakaForms/Winputs/LabelForm.vue";
+import TextAreaForm from "@/Components/WakaForms/Winputs/TextAreaForm.vue";
+import RicheEditorForm from "@/Components/WakaForms/Winputs/RicheEditorForm.vue";
+import FileUploaderForm from "@/Components/WakaForms/Winputs/FileUploaderForm.vue";
+import TagListForm from "@/Components/WakaForms/Winputs/TagListForm.vue";
+import CheckBoxForm from "@/Components/WakaForms/Winputs/CheckBoxForm.vue";
 import InputLabel from "@/Components/WakaForms/Wlabels/InputLabel.vue";
 import InputError from "@/Components/WakaForms/Wlabels/InputError.vue";
 export default {
     components: {
         LabelForm,
         RicheEditorForm,
-        FileuploaderForm,
+        FileUploaderForm,
         TagListForm,
         TextAreaForm,
         InputLabel,
         InputError,
+        CheckBoxForm
     },
     props: {
         config: {
@@ -51,12 +53,16 @@ export default {
             switch (type) {
                 case "textArea":
                     return "TextAreaForm";
+                case "checkBox":
+                    return "CheckBoxForm";
                 case "richeEditor":
                     return "RicheEditorForm";
                 case "fileUploader":
-                    return "FileuploaderForm";
+                    return "FileUploaderForm";
                 case "tagList":
                     return "TagListForm";
+                case "nestedform":
+                    return "NestedForm";
                 default:
                     return "LabelForm";
             }

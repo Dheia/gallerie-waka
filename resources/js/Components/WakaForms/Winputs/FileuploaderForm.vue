@@ -72,6 +72,10 @@ export default {
     },
     methods: {
         handleFilePondInit() {
+            console.log("handleFilePondInit")
+            console.log(this.form)
+            console.log(this.formKey)
+            console.log(this.form[this.formKey])
             if (this.form[this.formKey]) {
                 this.myFiles = [
                     {

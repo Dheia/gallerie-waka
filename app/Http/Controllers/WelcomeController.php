@@ -47,7 +47,7 @@ class WelcomeController extends Controller
             ->defaultSort($defaultSort)
             ->allowedSorts(['name', 'order_column', 'updated_at'])
             ->allowedFilters([$globalSearch, $scope])
-            ->paginate(9)
+            ->paginate(100)
             ->withQueryString()
             ->through(fn ($tableau) => [
                 'id' => $tableau->id,

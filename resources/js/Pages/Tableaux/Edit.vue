@@ -1,11 +1,11 @@
 <template>
 <AppLayout title="Gestion tableaux">
         <Head title="editer un tableau" />
-        <h1 class="mb-8 text-3xl font-bold">Editer un tableaux</h1>
-    <div class="max-w-4xl">
-        <wakaForm :class="config.form.formClass" :config="config" :formData="form" @submitWakaForm="submitForm">
-            <template #label-name></template>
-        </wakaForm>
+        <template #header>
+                <h2 class="py-2 font-semibold text-xl whitespace-nowrap text-gray-800 leading-tight">Editer Tableau</h2>
+        </template>
+    <div class="max-w-4xl p-8">
+        <wakaForm :class="config.form.formClass" :config="config" :formData="form" @submitWakaForm="submitForm" @wakaFormClose="goBack()"/>
     </div>
 </AppLayout>
 </template>
@@ -15,12 +15,15 @@ import wakaForm from "@/Components/WakaForms/Form.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Head,useForm } from '@inertiajs/vue3';
 
+
 export default {
-    inject: ['animate'],
     components: {
         wakaForm,
         AppLayout,
         Head,
+        LabelForm,
+        InputLabel,
+        InputError,
     },
     props: {
         config: Object,
@@ -29,42 +32,9 @@ export default {
     data() {
         return {
             form: this.formData,
-            testconfig: {
-                form: {
-                    url: "/bo/mycontroller{id}",
-                    formClass: "flex flex-wrap",
-                },
-                fields: {
-                    name: {
-                        type: "label",
-                        label: "Nom",
-                        required: true,
-                        class: "w-full md:w-1/2",
-                        // blocClass: "m-2 p-2"
-                    },
-                    slug: {
-                        type: "label",
-                        label: "slug",
-                        required: true,
-                        class: "w-full md:w-1/2",
-                    },
-                    description: {
-                        type: "richeEditor",
-                        label: "contenu",
-                    },
-                    image: {
-                        type: "fileUploader",
-                        label: "Charger une image",
-                    },
-                },
-            },
-            testformData: {
-                name: "Hello World",
-                slug: "hello-world",
-                description: "<p>Bonjour à tous</p>",
-            },
-        };
-    },
+            show: false
+            }
+        },
     mounted() {
         console.log("edit mounted");
         //console.log(this.$page.props);
@@ -81,14 +51,15 @@ export default {
                 },
                 onError: () => {
                     console.log('error')
-
-                    
                     console.log(this.formaData)
                 },
             };
             let formObject = useForm(form)
             formObject.put(`/bo/tableaux/${form.id}`,formOptions)
         },
+        goBack() {
+            window.history.back();
+        }
     },
 };
 </script>

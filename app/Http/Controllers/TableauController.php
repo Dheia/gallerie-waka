@@ -55,12 +55,10 @@ class TableauController extends Controller
 
     public function edit(Tableau $tableau)
     {
-        logger('edit');
         $inertiaData = [
             'formData' => $tableau->dataYamlFieldsTransformer(),
             'config' => $tableau->getModelFormConfig()
         ];
-        logger($tableau->getModelFormConfig()['fields']);
         return Inertia::render('Tableaux/Edit', $inertiaData);
     }
 
@@ -82,8 +80,6 @@ class TableauController extends Controller
     public function store()
     {
         $validationRules = Tableau::getStaticModelValidationRules();
-        logger($validationRules);
-        logger(Request::all());
         $tableau = Tableau::create(Request::validate($validationRules));
         $tableau->processImage(Request::get('image'));
         if($tags = Request::get('tableauTags')) {
@@ -106,17 +102,15 @@ class TableauController extends Controller
      */
     public function update(Tableau $tableau)
     {
-        
-        $validationRules = Tableau::getStaticModelValidationRules();
-        logger($validationRules);
-        logger(Request::all());
-        // $tableau->update(Request::validate($validationRules));
-        // $tableau->processImage(Request::get('image'));
-        // if($tags = Request::get('tableauTags')) {
-        //     $tableau->tableauTags()->sync($tags);
-        // }
-        // // return redirect()->back()->with('message', 'Tableau  mis à jour');;
-        // return to_route('tableaux.index')->with('message', 'Tableau crée');
+        //logger('update');
+        $validationRules = $tableau->getModelValidationRules();
+        $tableau->update(Request::validate($validationRules));
+        $tableau->processImage(Request::get('image'));
+        if($tags = Request::get('tableauTags')) {
+            $tableau->tableauTags()->sync($tags);
+        }
+        // return redirect()->back()->with('message', 'Tableau  mis à jour');;
+        return to_route('tableaux.index')->with('message', 'Tableau mis à jours');
     }
 
     /**

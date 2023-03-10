@@ -1,16 +1,18 @@
 <template>
     <AppLayout title="Gestion tableaux">
         <Head title="Organizations" />
-        <h1 class="mb-8 text-3xl font-bold">Tableaux</h1>
-        <div>
-            <search-filter :data="tabData" class="my-2">
-                <Link class="btn btn-primary"  :href="route('tableaux.create')">
-                    <span>Créer</span>
-                    <span class="hidden md:inline">&nbsp;Tableau</span>
+        <template #header>
+            <div class="flex items-center justify-between">
+                <h2 class="flex-1 font-semibold text-xl whitespace-nowrap text-gray-800 leading-tight">Les tableaux</h2>
+                <search-filter :data="tabData" class="my-2">
+                <Link class="btn  btn-primary btn-inline"  :href="route('tableaux.create')">
+                    <span>Nouveau Tableau</span><PlusIcon class="ml-2 -mr-1 h-6 w-6" /> 
                 </Link>
             </search-filter>
-            <div class="bg-white rounded-md shadow overflow-x-auto text-gray-600">
-                <table class="w-full whitespace-nowrap">
+            </div>
+        </template>
+        <main class="mx-auto p-8 pb-20 relative">
+                <table class="w-full bg-white rounded-md overflow-x-auto shadow text-gray-600 whitespace-nowrap">
                     <thead>
                         <tr class="text-left font-bold bg-slate-300">
                             <th v-for="(meta, key) in metas" :key="key" class="px-2 py-4">{{ meta.label }}</th>
@@ -40,9 +42,9 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
+
             <Pagination class="mt-6" :links="tableaux.links" />
-        </div>
+        </main>
     </AppLayout>
 </template>
 

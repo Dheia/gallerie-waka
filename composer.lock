@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "336ae71c34c605e3629b2c10789f3bf5",
+    "content-hash": "d5c399c63a78e28841a0f2bf10977f09",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -968,16 +968,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.4.3",
+            "version": "2.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "67c26b443f348a51926030c83481b85718457d3d"
+                "reference": "3cf1b6d4f0c820a2cf8bcaec39fc698f3443b5cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/67c26b443f348a51926030c83481b85718457d3d",
-                "reference": "67c26b443f348a51926030c83481b85718457d3d",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/3cf1b6d4f0c820a2cf8bcaec39fc698f3443b5cf",
+                "reference": "3cf1b6d4f0c820a2cf8bcaec39fc698f3443b5cf",
                 "shasum": ""
             },
             "require": {
@@ -1067,7 +1067,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.4.3"
+                "source": "https://github.com/guzzle/psr7/tree/2.4.4"
             },
             "funding": [
                 {
@@ -1083,7 +1083,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-10-26T14:07:24+00:00"
+            "time": "2023-03-09T13:19:02+00:00"
         },
         {
             "name": "guzzlehttp/uri-template",
@@ -3400,67 +3400,6 @@
             "time": "2022-06-13T21:57:56+00:00"
         },
         {
-            "name": "protonemedia/inertiajs-tables-laravel-query-builder",
-            "version": "2.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/protonemedia/inertiajs-tables-laravel-query-builder.git",
-                "reference": "4ad22b6b105f38689bfe4f298d61880e1977df16"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/protonemedia/inertiajs-tables-laravel-query-builder/zipball/4ad22b6b105f38689bfe4f298d61880e1977df16",
-                "reference": "4ad22b6b105f38689bfe4f298d61880e1977df16",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "^9.37|^10.0",
-                "php": "^8.1|^8.2"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.8",
-                "inertiajs/inertia-laravel": "^0.6.9",
-                "orchestra/testbench": "^7.0|^8.0",
-                "phpunit/phpunit": "^9.5"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "ProtoneMedia\\LaravelQueryBuilderInertiaJs\\InertiaTableServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "ProtoneMedia\\LaravelQueryBuilderInertiaJs\\": "php"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Pascal Baljet",
-                    "email": "pascal@protone.media"
-                }
-            ],
-            "description": "Inertia.js Front-end Components for Spatie's Laravel Query Builder",
-            "homepage": "https://github.com/protonemedia/inertiajs-tables-laravel-query-builder",
-            "support": {
-                "issues": "https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/issues",
-                "source": "https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/tree/2.2.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/pascalbaljet",
-                    "type": "github"
-                }
-            ],
-            "time": "2023-02-21T22:48:27+00:00"
-        },
-        {
             "name": "psr/container",
             "version": "2.0.2",
             "source": {
@@ -4334,16 +4273,16 @@
         },
         {
             "name": "spatie/image-optimizer",
-            "version": "1.6.3",
+            "version": "1.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/image-optimizer.git",
-                "reference": "9ed7a80f92310d162adb39f8ffe2622b5ae05d91"
+                "reference": "d997e01ba980b2769ddca2f00badd3b80c2a2512"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/image-optimizer/zipball/9ed7a80f92310d162adb39f8ffe2622b5ae05d91",
-                "reference": "9ed7a80f92310d162adb39f8ffe2622b5ae05d91",
+                "url": "https://api.github.com/repos/spatie/image-optimizer/zipball/d997e01ba980b2769ddca2f00badd3b80c2a2512",
+                "reference": "d997e01ba980b2769ddca2f00badd3b80c2a2512",
                 "shasum": ""
             },
             "require": {
@@ -4383,9 +4322,9 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/image-optimizer/issues",
-                "source": "https://github.com/spatie/image-optimizer/tree/1.6.3"
+                "source": "https://github.com/spatie/image-optimizer/tree/1.6.4"
             },
-            "time": "2023-02-28T16:56:09+00:00"
+            "time": "2023-03-10T08:43:19+00:00"
         },
         {
             "name": "spatie/laravel-medialibrary",
@@ -7608,10 +7547,16 @@
         {
             "name": "waka/laravel_yamlforms",
             "version": "0.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/charlesStOlive/laravel-yaml-forms.git",
+                "reference": "5142dbdec57f5879560549c0267945f48debbde4"
+            },
             "dist": {
-                "type": "path",
-                "url": "../01-repo/laravel-yaml-forms",
-                "reference": "54f8183be3ce6fce21b7cdb983e7ac1154367dc1"
+                "type": "zip",
+                "url": "https://api.github.com/repos/charlesStOlive/laravel-yaml-forms/zipball/5142dbdec57f5879560549c0267945f48debbde4",
+                "reference": "5142dbdec57f5879560549c0267945f48debbde4",
+                "shasum": ""
             },
             "require": {
                 "php": "^8.1",
@@ -7648,6 +7593,7 @@
                     "Waka\\YamlForms\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -7665,9 +7611,11 @@
                 "laravel",
                 "yamlforms"
             ],
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/charlesStOlive/laravel-yaml-forms/issues",
+                "source": "https://github.com/charlesStOlive/laravel-yaml-forms/tree/0.0.4"
+            },
+            "time": "2023-03-10T14:30:16+00:00"
         },
         {
             "name": "webmozart/assert",

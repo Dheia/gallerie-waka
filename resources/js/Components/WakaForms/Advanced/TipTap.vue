@@ -2,7 +2,7 @@
     <div v-if="editor">
     <bubble-menu
       class="flex p-1 rounded-lg bg-blue-700 fill-white space-x-2"
-      :tippy-options="{ duration: 100 }"
+      :tippy-options="{ duration: 100, inlinePositioning: true }"
       :editor="editor"
     >
       <button @click="editor.chain().focus().toggleBold().run()" :class="{ ' fill-slate-400': editor.isActive('bold') }">
@@ -13,7 +13,7 @@
       </button>
     </bubble-menu>
   </div>
-  <editor-content :editor="editor" />
+  <editor-content class="prose max-w-none" :editor="editor" />
 </template>
 
 <script>
@@ -65,7 +65,7 @@ export default {
     this.editor = new Editor({
         editorProps: {
             attributes: {
-            class: 'p-1  max-w-none form-textarea border-gray-300 focus:border-indigo-300 focus:ring focus:ring-accent-light focus:ring-opacity-50 rounded-md shadow-sm',
+            class: 'form-textarea',
             },
         },
         extensions: [

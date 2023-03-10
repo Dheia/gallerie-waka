@@ -14,7 +14,6 @@
         "laravel/jetstream": "^2.16",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "protonemedia/inertiajs-tables-laravel-query-builder": "^2.0",
         "spatie/eloquent-sortable": "^4.0",
         "spatie/laravel-medialibrary": "10.2.*",
         "spatie/laravel-query-builder": "^5.1",
@@ -69,10 +68,6 @@
         }
     },
     "repositories": [
-        {
-            "type": "path",
-            "url": "../01-repo/laravel-yaml-forms"
-        },
         {
             "type": "path",
             "url": "../01-repo/laravel-yaml-console"

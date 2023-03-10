@@ -2,75 +2,125 @@
 
 namespace App\Http\Controllers;
 
-
-use Illuminate\Support\Facades\Request;
 use App\Models\Page;
+use App\Models\PageTag;
 use Illuminate\Support\Collection;
+use ProtoneMedia\LaravelQueryBuilderInertiaJs\InertiaTable;
 use Inertia\Inertia;
-
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
+use Illuminate\Support\Facades\Request;
 
 class PageController extends Controller
 {
-    public function index() {
-        $pages = Page::get();
+    private $orderInverted = true;
+
+    public function index()
+    {
         
-        $pages->each(function ($item, $key) {
-            $item['image'] = $item->image;
-        });
-        return Inertia::render('Pages/Index', ['pages' => $pages]);
+        // logger(Page::extractFields($columnsConfig));
+
+        $columnsConfig = Page::getColumnsConfig();
+        $columnsMeta = Page::getColumnsMeta();
+        
+
+        $pagex = QueryBuilder::for(Page::class)
+        ->defaultSort($columnsConfig['defaultOrder'])
+        ->allowedSorts(['id', 'name', 'order_column',  'slug', 'updated_at'])
+        ->paginate($columnsConfig['pagination'])
+        ->withQueryString()
+        ->through([Page::class, 'dataYamlColumnTransformer']);
+        
+        $inertiaData = [
+            'pages' => $pagex,
+            'metas' => $columnsMeta,
+            'columnsConfig' => $columnsConfig,
+            'sort' => Request::all('sort'),
+            'filter' => Request::all('filter'),
+        ];
+
+        return Inertia::render('Pages/Index', $inertiaData);
+    }
+
+   
+
+    public function edit(Page $page)
+    {
+        logger($page->metas);
+        $inertiaData = [
+            'formData' => $page->dataYamlFieldsTransformer(),
+            'config' => $page->getModelFormConfig()
+        ];
+
+        logger($inertiaData);
+       return $inertiaData;
     }
 
 
+    public function create() {
+        $inertiaData = [
+            'formData' => Page::getEmptyForm(),
+            'config' => Page::getStaticModelFormConfig()
+        ];
+        return $inertiaData;
+    }
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\StorePageRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store()
+    {
+        //logger('store');
+        $validationRules = Page::getStaticModelValidationRules();
+        //logger(Request::all());
+        $page = Page::create(Request::validate($validationRules));
+        $page->processImage(Request::get('image'));
+        if($tags = Request::get('tableauTags')) {
+            $page->tableauTags()->sync($tags);
+        }
+        return to_route('pages.index')->with('message', 'Page crée');
+        
+    }
+
+   
 
 
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdatePageRequest  $request
+     * @param  \App\Models\Page  $page
+     * @return \Illuminate\Http\Response
+     */
     public function update(Page $page)
     {
-        logger($page->name);
-        logger(Request::only('title','name','slug' ));
-        logger(Request::validate([
-            'title' => ['required', 'max:250'],
-            'name' => ['required', 'max:150'],
-            'slug' => ['required', 'max:150'],
-            'content' => ['required'],
-            ]));
-        $page->update(
-            Request::validate([
-            'title' => ['required', 'max:250'],
-            'name' => ['required', 'max:150'],
-            'slug' => ['required', 'max:150'],
-            'content' => ['required'],
-            ])
-        );
-
-        $this->processImage(Request::get('image'), $page);
-        return to_route('pages.index')->with('message', 'Page  mis à jour');;
+        $validationRules = $page->getModelValidationRules();
+        $page->update(Request::validate($validationRules));
+        $page->processImage(Request::get('image'));
+        if($tags = Request::get('tableauTags')) {
+            $page->tableauTags()->sync($tags);
+        }
+        // return redirect()->back()->with('message', 'Page  mis à jour');;
+        return to_route('pages.index')->with('message', 'Page mis à jours');
     }
 
-
-
-
-
-    protected function processImage($image = null, $model = null)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Page  $page
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Page $page)
     {
-        if(!$model?->staticOptions->image) {
-            return;
-        }
-        if($image && $model)
-        {
-            $path = storage_path('app/public/' . $image);
-            if(file_exists($path)) {
-                logger('nouveau  fichier, je met  à jour !');
-                $model->addMedia($path)->toMediaCollection('image');
-            } else {
-                logger('pas de fichier, je ne met rien à jour !');
-            }
-        } else {
-            if($model) {
-                $model->getFirstMedia('image')->delete();
-            }
-        }
+        $page->delete();
+        return redirect()->back()->with('message', 'Page deleted');
+    }
+
+    public function moveOrder(Page $page) {
+        $page->moveOrder(Request::get('mode'));
     }
 }
-
-
-
